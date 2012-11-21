@@ -36,6 +36,13 @@ class BlogSyndicatorEntryExtension extends DataObjectDecorator {
 		}
 	}
 	
+	/**
+	 * Make sure cron can publish an entry.
+	 * @return bool|null
+	 */
+	public function canPublish() {
+		return ( Controller::curr()->request->param('ID') == SiteConfig::current_site_config()->CronRunning ) ? true : null;
+	}
 	public function requireDefaultRecords() {
 		
 		// Setup the entry import cron
