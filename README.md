@@ -1,0 +1,2 @@
+silverstripe-blog-syndicator
+============================
