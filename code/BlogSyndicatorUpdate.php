@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Updates syndicated blogs from all sources setup in the database.
+ */
 class BlogSyndicatorUpdate extends Controller {
 	
 	private static $excludedFields = array(
@@ -11,16 +14,10 @@ class BlogSyndicatorUpdate extends Controller {
 		'RecordClassName'
 	);
 	
-	public function bam() {
-		return self::run();
-	}
-	
 	/**
 	 * Update all syndicated blog content.
 	 */
 	public static function run() {
-		
-		
 		$sources = DataObject::get('BlogSyndicatorSource');
 		
 		if (!$sources) return;
@@ -29,7 +26,7 @@ class BlogSyndicatorUpdate extends Controller {
 			// Get the source
 			$ch = curl_init();
 			$url = Controller::join_links($source->SourceURL, $source->LastUpdate);
-			Debug::dump($url);
+			
 			$options = array(
 				CURLOPT_URL => $url,
 				CURLOPT_RETURNTRANSFER => true,
@@ -39,7 +36,6 @@ class BlogSyndicatorUpdate extends Controller {
 			$results = curl_exec($ch);
 			$results = Convert::json2obj($results);
 			
-			Debug::dump($results);
 			
 			if ( isset($results->data) && is_array($results->data) ) {
 				foreach ($results->data as $entryData) {

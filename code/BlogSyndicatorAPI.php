@@ -1,6 +1,6 @@
 <?php
 /**
- * StoreLocatorAPI provides access to JSON data about stores
+ * Provides JSON access to blog updates
  *
  * @author Simon
  */
@@ -10,7 +10,7 @@ class BlogSyndicatorAPI extends Controller {
 	const STATUS_ERR = 'error';
 	
 	/**
-	 * Return blog posts which have been updated since a given time.
+	 * Return blog posts which have been updated and deleted since a given time.
 	 */
 	public function updated() {
 		
@@ -29,30 +29,13 @@ class BlogSyndicatorAPI extends Controller {
 		return $this->output($return, self::STATUS_OK);
 	}
 	
-	public function deleted() {
-		
-	}
-	
-	public function holders() {
-		$holders = DataObject::get('BlogHolder');
-		$output = array();
-		foreach ($holders as $holder) {
-			$h = new stdClass();
-			$h->Title = $holder->Title;
-			$h->ID = $holder->ID;
-			$output[] = $h;
-		}
-		
-		return $this->output($output, self::STATUS_OK);
-	}
-	
 	/**
 	 * Converts a DataObjectSet to an array.
 	 * 
 	 * @param DataObjectSet $set The set to convert
 	 * @return array
 	 */
-	public function convert(DataObjectSet $set) {
+	private function convert(DataObjectSet $set) {
 		$ret = array();
 		if ($set) {
 			foreach ($set as $item) {
