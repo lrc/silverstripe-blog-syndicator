@@ -77,8 +77,9 @@ class BlogSyndicatorUpdate extends Controller {
 						$entry->ParentID = $source->BlogHolder()->ID;
 						$entry->Syndicated = true;
 						$entry->Syndicate = false;
-
+						$entry->Date = $entryData->Date; // For some reason I can't understand Date doesn't seem to always update correctly without this.
 						$entry->write();
+						
 						if ($entryData->Status == 'Published') {
 							$entry->doPublish();
 						}
